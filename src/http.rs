@@ -1,6 +1,5 @@
 use std::result;
 use std::str;
-use std::io::{self, Write, Result};
 use futures::{Future, Stream, future};
 use hyper;
 use hyper::{Client, Request, Response, Method};

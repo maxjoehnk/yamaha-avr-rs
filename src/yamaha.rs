@@ -42,7 +42,7 @@ pub struct Input {
 }
 
 fn parse_system_config(xml: String) -> Result<SystemConfig> {
-    let mut reader = xml::reader::EventReader::from_str(&xml);
+    let reader = xml::reader::EventReader::from_str(&xml);
     let mut inputs: Vec<Input> = Vec::new();
     let mut in_inputs = false;
     let mut current_input: Option<Input> = None;

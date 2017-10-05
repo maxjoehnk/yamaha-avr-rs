@@ -5,7 +5,7 @@ extern crate yamaha_avr;
 use clap::App;
 
 fn main() {
-    let mut matches = clap_app!(@app(App::new("Yamaha AVR Remote"))
+    let matches = clap_app!(@app(App::new("Yamaha AVR Remote"))
         (version: "0.1.0")
         (author: "Max Jöhnk <maxjoehnk@gmail.com>")
         (@arg ip: --ip +takes_value "Set the AVR Ip")
@@ -35,7 +35,7 @@ fn main() {
         let value: bool = matches.value_of("value").unwrap().parse().unwrap();
         avr.set_mute(value).unwrap();
     }
-    if let Some(matches) = matches.subcommand_matches("inputs") {
+    if matches.subcommand_matches("inputs").is_some() {
         let inputs = avr.get_inputs().unwrap();
         for input in inputs {
             println!("{}", input.name);
