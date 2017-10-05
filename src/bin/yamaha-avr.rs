@@ -1,14 +1,8 @@
 #[macro_use]
 extern crate clap;
-extern crate xml;
-extern crate futures;
-extern crate hyper;
-extern crate tokio_core;
+extern crate yamaha_avr;
 
 use clap::App;
-
-pub mod yamaha;
-pub mod http;
 
 fn main() {
     let mut matches = clap_app!(@app(App::new("Yamaha AVR Remote"))
@@ -32,7 +26,7 @@ fn main() {
         )
     ).get_matches();
     let ip: String = matches.value_of("ip").unwrap_or("192.168.2.102").to_owned();
-    let mut avr = yamaha::YamahaAvr::new(ip);
+    let mut avr = yamaha_avr::connect(ip);
     if let Some(matches) = matches.subcommand_matches("power") {
         let value: bool = matches.value_of("value").unwrap().parse().unwrap();
         avr.power(value).unwrap();
