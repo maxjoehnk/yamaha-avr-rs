@@ -1,3 +1,4 @@
+use std::result;
 use std::str;
 use std::io::{self, Write, Result};
 use futures::{Future, Stream, future};
@@ -6,7 +7,7 @@ use hyper::{Client, Request, Response, Method};
 use hyper::header::{ContentLength, ContentType};
 use tokio_core::reactor::Core;
 
-pub fn exec(ip: String, body: String) -> Result<()> {
+pub fn exec(ip: String, body: String) -> result::Result<String, hyper::Error> {
     let mut core = Core::new()?;
     let client = Client::new(&core.handle());
     let uri = format!("http://{}/YamahaRemoteControl/ctrl", ip).parse().unwrap();
@@ -24,6 +25,5 @@ pub fn exec(ip: String, body: String) -> Result<()> {
             future::ok(body)
         })
     });
-    let c = core.run(work).unwrap();
-    Ok(())
+    core.run(work)
 }

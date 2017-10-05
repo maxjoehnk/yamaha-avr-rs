@@ -1,6 +1,8 @@
 extern crate xml;
 extern crate regex;
 
+use hyper;
+use std::result;
 use std::io::Result;
 
 use http::exec;
@@ -178,7 +180,7 @@ impl YamahaAvr {
         }
     }
 
-    fn exec(&mut self, xml: String) -> Result<()> {
+    fn exec(&mut self, xml: String) -> result::Result<String, hyper::Error> {
         exec(self.ip.clone(), xml)
     }
 
@@ -221,7 +223,7 @@ impl YamahaAvr {
 
     pub fn get_system_config(&mut self) -> Result<SystemConfig> {
         let cmd = "<YAMAHA_AV cmd=\"GET\"><System><Config>GetParam</Config></System></YAMAHA_AV>".to_owned();
-        let res = "<YAMAHA_AV rsp=\"GET\" RC=\"0\"><System><Config><Model_Name>RX-V473</Model_Name><System_ID>05852093</System_ID><Version>1.14/1.04</Version><Feature_Existence><Main_Zone>1</Main_Zone><Zone_2>0</Zone_2><Zone_3>0</Zone_3><Zone_4>0</Zone_4><Tuner>1</Tuner><HD_Radio>0</HD_Radio><Rhapsody>0</Rhapsody><SIRIUS_IR>0</SIRIUS_IR><Pandora>0</Pandora><SERVER>1</SERVER><NET_RADIO>1</NET_RADIO><USB>1</USB><iPod_USB>1</iPod_USB><AirPlay>1</AirPlay></Feature_Existence><Name><Input><HDMI_1>  Chrome </HDMI_1><HDMI_2>Raspberry</HDMI_2><HDMI_3>   PC    </HDMI_3><HDMI_4>  Game   </HDMI_4><AV_1>         </AV_1><AV_2>   PC    </AV_2><AV_3>   TV    </AV_3><AV_4>         </AV_4><AV_5>   Wii   </AV_5><AV_6>Turntable</AV_6><V_AUX>  V-AUX  </V_AUX><USB>   USB   </USB></Input></Name></Config></System></YAMAHA_AV>".to_owned();
+        let res = self.exec(cmd).unwrap();
         parse_system_config(res)
     }
 }
