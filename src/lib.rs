@@ -10,5 +10,5 @@ pub fn connect(ip: String) -> yamaha::YamahaAvr {
 }
 
 pub fn discover() -> Vec<yamaha::YamahaAvr> {
-    Vec::new()
+    unimplemented!()
 }
