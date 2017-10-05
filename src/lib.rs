@@ -4,14 +4,11 @@ extern crate hyper;
 extern crate tokio_core;
 
 pub mod yamaha;
-mod http;
 
-use yamaha::YamahaAvr;
-
-pub fn connect(ip: String) -> YamahaAvr {
-    YamahaAvr::new(ip)
+pub fn connect(ip: String) -> yamaha::YamahaAvr {
+    yamaha::YamahaAvr::new(ip)
 }
 
-pub fn discover() -> Vec<YamahaAvr> {
+pub fn discover() -> Vec<yamaha::YamahaAvr> {
     Vec::new()
 }
