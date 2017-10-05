@@ -9,6 +9,10 @@ keywords = ["yamaha", "avr"]
 categories = ["command-line-interface", "api-bindings"]
 license = "GPL-3.0"
 
+[[bin]]
+name = "yamaha-avr"
+doc = false
+
 [badges]
 is-it-maintained-issue-resolution = { repository = "maxjoehnk/yamaha-avr-rs" }
 is-it-maintained-open-issues = { repository = "maxjoehnk/yamaha-avr-rs" }

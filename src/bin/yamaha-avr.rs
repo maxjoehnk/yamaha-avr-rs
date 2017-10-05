@@ -29,11 +29,11 @@ fn main() {
     let mut avr = yamaha_avr::connect(ip);
     if let Some(matches) = matches.subcommand_matches("power") {
         let value: bool = matches.value_of("value").unwrap().parse().unwrap();
-        avr.power(value).unwrap();
+        avr.set_power(value).unwrap();
     }
     if let Some(matches) = matches.subcommand_matches("mute") {
         let value: bool = matches.value_of("value").unwrap().parse().unwrap();
-        avr.mute(value).unwrap();
+        avr.set_mute(value).unwrap();
     }
     if let Some(matches) = matches.subcommand_matches("inputs") {
         let inputs = avr.get_inputs().unwrap();
@@ -43,6 +43,6 @@ fn main() {
     }
     if let Some(matches) = matches.subcommand_matches("select") {
         let input = matches.value_of("input").unwrap().to_owned();
-        avr.select_input(input).unwrap();
+        avr.select_input(input, None).unwrap();
     }
 }
