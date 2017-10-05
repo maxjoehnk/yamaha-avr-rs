@@ -10,8 +10,8 @@ categories = ["command-line-interface", "api-bindings"]
 license = "GPL-3.0"
 
 [badges]
-is-it-maintained-issue-resolution = { repository = "https://github.com/maxjoehnk/yamaha-avr-rs" }
-is-it-maintained-open-issues = { repository = "https://github.com/maxjoehnk/yamaha-avr-rs" }
+is-it-maintained-issue-resolution = { repository = "maxjoehnk/yamaha-avr-rs" }
+is-it-maintained-open-issues = { repository = "maxjoehnk/yamaha-avr-rs" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
