@@ -1,7 +1,18 @@
 [package]
 name = "yamaha_avr"
+description = "A Library and CLI Tool for interaction with Yamaha AVRs"
 version = "0.0.1"
 authors = ["Max <maxjoehnk@gmail.com>"]
+repository = "https://github.com/maxjoehnk/yamaha-avr-rs"
+readme = "README.md"
+keywords = ["yamaha", "avr"]
+categories = ["command-line-interface", "api-bindings"]
+license = "GPL-3.0"
+
+[badges]
+is-it-maintained-issue-resolution = { repository = "https://github.com/maxjoehnk/yamaha-avr-rs" }
+is-it-maintained-open-issues = { repository = "https://github.com/maxjoehnk/yamaha-avr-rs" }
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 futures = "0.1"
