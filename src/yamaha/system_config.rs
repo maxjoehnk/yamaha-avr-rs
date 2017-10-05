@@ -3,7 +3,7 @@ extern crate regex;
 
 use std::io::Result;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(PartialEq, Debug, Copy, Clone)]
 pub struct SystemConfigAvailableFeatures {
     pub tuner: bool,
     pub hd_radio: bool,
@@ -17,7 +17,7 @@ pub struct SystemConfigAvailableFeatures {
     pub air_play: bool
 }
 
-#[derive(Debug, Clone)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct SystemConfig {
     pub model_name: Option<String>,
     pub inputs: Vec<Input>,
@@ -25,7 +25,7 @@ pub struct SystemConfig {
     pub available_features: SystemConfigAvailableFeatures
 }
 
-#[derive(Debug, Clone)]
+#[derive(PartialEq, Debug, Clone)]
 pub struct Input {
     /// The Internal name, used for input selection
     pub name: String,
@@ -163,4 +163,53 @@ pub fn parse_system_config(xml: String) -> Result<SystemConfig> {
         available_zones,
         available_features
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    impl Input {
+        fn new(name: &'static str, display_name: Option<&'static str>) -> Input {
+            Input {
+                name: String::from(name),
+                display_name: display_name.map(String::from)
+            }
+        }
+    }
+
+    #[test]
+    fn parse_system_config_should_parse_xml() {
+        let input = String::from("<YAMAHA_AV rsp=\"GET\" RC=\"0\"><System><Config><Model_Name>RX-V473</Model_Name><System_ID>05852093</System_ID><Version>1.14/1.04</Version><Feature_Existence><Main_Zone>1</Main_Zone><Zone_2>0</Zone_2><Zone_3>0</Zone_3><Zone_4>0</Zone_4><Tuner>1</Tuner><HD_Radio>0</HD_Radio><Rhapsody>0</Rhapsody><SIRIUS_IR>0</SIRIUS_IR><Pandora>0</Pandora><SERVER>1</SERVER><NET_RADIO>1</NET_RADIO><USB>1</USB><iPod_USB>1</iPod_USB><AirPlay>1</AirPlay></Feature_Existence><Name><Input><HDMI_1>  Chrome </HDMI_1><HDMI_2>Raspberry</HDMI_2><HDMI_3>   PC    </HDMI_3><HDMI_4>  Game   </HDMI_4><AV_1>         </AV_1><AV_2>   PC    </AV_2><AV_3>   TV    </AV_3><AV_4>         </AV_4><AV_5>   Wii   </AV_5><AV_6>Turntable</AV_6><V_AUX>  V-AUX  </V_AUX><USB>   USB   </USB></Input></Name></Config></System></YAMAHA_AV>");
+        assert_eq!(parse_system_config(input).unwrap(), SystemConfig {
+            inputs: vec![
+                Input::new("HDMI1", Some("Chrome")),
+                Input::new("HDMI2", Some("Raspberry")),
+                Input::new("HDMI3", Some("PC")),
+                Input::new("HDMI4", Some("Game")),
+                Input::new("AV1", None),
+                Input::new("AV2", Some("PC")),
+                Input::new("AV3", Some("TV")),
+                Input::new("AV4", None),
+                Input::new("AV5", Some("Wii")),
+                Input::new("AV6", Some("Turntable")),
+                Input::new("V-AUX", Some("V-AUX")),
+                Input::new("USB", Some("USB"))
+            ],
+            model_name: Some(String::from("RX-V473")),
+            available_zones: vec![String::from("Main_Zone")],
+            available_features: SystemConfigAvailableFeatures {
+                tuner: true,
+                hd_radio: false,
+                rhapsody: false,
+                sirius_ir: false,
+                pandora: false,
+                server: true,
+                net_radio: true,
+                usb: true,
+                ipod: true,
+                air_play: true
+            }
+        });
+    }
 }
