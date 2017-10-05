@@ -16,7 +16,6 @@ pub fn exec(ip: String, body: String) -> result::Result<String, hyper::Error> {
     req.headers_mut().set(ContentLength(body.len() as u64));
     req.set_body(body);
     let work = client.request(req).and_then(|res: Response| {
-        println!("Response: {}", res.status());
         res.body().fold(Vec::new(), |mut v, chunk| {
             v.extend(&chunk[..]);
             future::ok::<_, hyper::Error>(v)
