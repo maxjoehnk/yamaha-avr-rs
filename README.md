@@ -7,7 +7,7 @@
 Add this to your `Cargo.toml`:
 ```toml
 [dependencies]
-libc = "0.2"
+yamaha_avr = "0.2"
 ```
 
 Next add this to your crate root:
