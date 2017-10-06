@@ -53,6 +53,8 @@ SUBCOMMANDS:
     help      Prints this message or the help of the given subcommand(s)
     inputs    Get available Inputs
     mute      Mute/Unmute
-    power     Set Power
+    power     Get/Set Power
     select    Select Input
+    volume    Get/set the volume
+
 ```
