@@ -50,6 +50,17 @@ impl YamahaAvr {
         Ok(())
     }
 
+    pub fn get_volume(&mut self) -> Result<i32> {
+        let info = self.get_basic_info().unwrap();
+        Ok(info.volume)
+    }
+
+    pub fn set_volume(&mut self, value: i32) -> Result<()> {
+        let cmd = format!("<YAMAHA_AV cmd=\"PUT\"><Main_Zone><Volume><Lvl><Val>{}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume></Main_Zone></YAMAHA_AV>", value);
+        self.exec(cmd).unwrap();
+        Ok(())
+    }
+
     /// Select a Input for the given Zone or Main_Zone when zone is None.
     ///
     /// Does nothing when Input is not available

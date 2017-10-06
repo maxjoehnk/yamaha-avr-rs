@@ -24,6 +24,11 @@ fn main() {
             (about: "Select Input")
             (@arg input: +required "The Input to select")
         )
+        (@subcommand volume =>
+            (@setting AllowNegativeNumbers)
+            (about: "Get/set the volume")
+            (@arg value: "The Volume to set to")
+        )
     ).get_matches();
     let ip: String = matches.value_of("ip").unwrap_or("192.168.2.102").to_owned();
     let mut avr = yamaha_avr::connect(ip);
@@ -68,6 +73,22 @@ fn main() {
     if let Some(matches) = matches.subcommand_matches("select") {
         let input = matches.value_of("input").unwrap().to_owned();
         avr.select_input(input, None).unwrap();
+    }
+    if let Some(matches) = matches.subcommand_matches("volume") {
+        match matches.value_of("value") {
+            Some(value) => {
+                let parsed_value: Result<i32, std::num::ParseIntError> = value.parse();
+                if parsed_value.is_ok() {
+                    avr.set_volume(parsed_value.unwrap()).unwrap();
+                }else {
+                    println!("Invalid value {}", value);
+                }
+            },
+            None => {
+                let volume = avr.get_volume().unwrap();
+                println!("Volume: {:?}", volume);
+            }
+        }
     }
 }
 
