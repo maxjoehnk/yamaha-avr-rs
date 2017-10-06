@@ -4,6 +4,7 @@ use std::io::Result;
 
 mod http;
 mod system_config;
+mod basic_info;
 
 pub struct YamahaAvr {
     ip: String
@@ -20,10 +21,27 @@ impl YamahaAvr {
         http::exec(self.ip.clone(), xml)
     }
 
+    pub fn get_basic_info(&mut self) -> result::Result<basic_info::BasicInfo, hyper::Error> {
+        let cmd = "<YAMAHA_AV cmd=\"GET\"><Main_Zone><Basic_Status>GetParam</Basic_Status></Main_Zone></YAMAHA_AV>".to_owned();
+        let res = self.exec(cmd)?;
+        let info = basic_info::parse_basic_info(res)?;
+        Ok(info)
+    }
+
+    pub fn get_power(&mut self) -> Result<bool> {
+        let info = self.get_basic_info().unwrap();
+        Ok(info.power)
+    }
+
     pub fn set_power(&mut self, value: bool) -> Result<()> {
         let cmd = format!("<YAMAHA_AV cmd=\"PUT\"><Main_Zone><Power_Control><Power>{}</Power></Power_Control></Main_Zone></YAMAHA_AV>", if value { "On" } else { "Standby" });
         self.exec(cmd).unwrap();
         Ok(())
+    }
+
+    pub fn get_mute(&mut self) -> Result<bool> {
+        let info = self.get_basic_info().unwrap();
+        Ok(info.mute)
     }
 
     pub fn set_mute(&mut self, value: bool) -> Result<()> {

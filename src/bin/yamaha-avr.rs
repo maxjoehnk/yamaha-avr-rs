@@ -15,7 +15,7 @@ fn main() {
         )
         (@subcommand mute =>
             (about: "Mute/Unmute")
-            (@arg value: +required "Set the Mute State")
+            (@arg value: "Set the Mute State")
         )
         (@subcommand inputs =>
             (about: "Get available Inputs")
@@ -32,13 +32,14 @@ fn main() {
             Some(value) => {
                 let parsed_value = parse_bool_state(value);
                 if parsed_value.is_some() {
-                    avr.set_power(parsed_value.unwrap());
+                    avr.set_power(parsed_value.unwrap()).unwrap();
                 }else {
                     println!("Invalid value {}", value);
                 }
             },
             None => {
-                unimplemented!();
+                let power = avr.get_power().unwrap();
+                println!("Power: {}", transform_bool_state(power));
             }
         }
     }
@@ -47,13 +48,14 @@ fn main() {
             Some(value) => {
                 let parsed_value = parse_bool_state(value);
                 if parsed_value.is_some() {
-                    avr.set_mute(parsed_value.unwrap());
+                    avr.set_mute(parsed_value.unwrap()).unwrap();
                 }else {
                     println!("Invalid value {}", value);
                 }
             },
             None => {
-                unimplemented!();
+                let muted = avr.get_mute().unwrap();
+                println!("Mute: {}", transform_bool_state(muted));
             }
         }
     }
@@ -76,4 +78,8 @@ fn parse_bool_state(input: &str) -> Option<bool> {
         return Some(false);
     }
     None
+}
+
+fn transform_bool_state(input: bool) -> &'static str {
+    if input { "On" } else { "Off" }
 }
