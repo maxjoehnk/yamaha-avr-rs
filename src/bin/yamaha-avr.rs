@@ -6,7 +6,7 @@ use clap::App;
 
 fn main() {
     let matches = clap_app!(@app(App::new("Yamaha AVR Remote"))
-        (version: "0.1.0")
+        (version: "0.2.0")
         (author: "Max Jöhnk <maxjoehnk@gmail.com>")
         (@arg ip: --ip +takes_value "Set the AVR Ip")
         (@subcommand power =>
